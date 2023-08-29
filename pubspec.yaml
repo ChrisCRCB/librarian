@@ -1,0 +1,29 @@
+name: librarian
+description: "The Librarian system for CRCB."
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.2.0-42.1.beta <4.0.0"
+
+dependencies:
+  backstreets_widgets: ^0.8.0
+  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+
+  json_annotation: ^4.8.1
+
+dev_dependencies:
+  build_runner: ^2.4.6
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+  json_serializable: ^6.7.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/books.json
