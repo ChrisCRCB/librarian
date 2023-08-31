@@ -46,7 +46,14 @@ class BooksListView extends StatelessWidget {
           searchString: bookTitle + bookAuthor,
           child: ListTile(
             autofocus: index == 0,
-            title: Text('$bookTitle by $bookAuthor'),
+            title: Text(
+              '$bookTitle by $bookAuthor',
+              style: const TextStyle(
+                fontSize: 28,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             onTap: () => pushWidget(
               context: context,
               builder: (final context) => BookScreen(book: book),

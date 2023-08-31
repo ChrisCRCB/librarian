@@ -26,68 +26,91 @@ class BookScreen extends ConsumerWidget {
     var needPublisher = true;
     final series = Set.from(book.series ?? []);
     return Cancel(
-      child: SimpleScaffold(
-        title: book.title,
-        body: Column(
-          children: [
-            CopyListTile(
-              title: 'Title',
-              subtitle: book.title,
-              autofocus: true,
-            ),
-            ...book.authors.map(
-              (final e) {
-                if (e.role.toLowerCase().trim().startsWith('publisher')) {
-                  needPublisher = false;
-                }
-                return ListTile(
-                  title: Text(e.role),
-                  subtitle: Text(e.firstLast),
-                  onTap: () => pushWidget(
-                    context: context,
-                    builder: (final context) => AuthorScreen(author: e),
-                  ),
-                );
-              },
-            ),
-            if (needPublisher)
-              ListTile(
-                title: const Text('Publisher'),
-                subtitle: Text(book.publication),
-                onTap: () => pushWidget(
-                  context: context,
-                  builder: (final context) => BooksScreen(
-                    title: 'Published by: $publisher',
-                    where: (final book) => book.publication == publisher,
+      child: TabbedScaffold(
+        tabs: [
+          TabbedScaffoldTab(
+            title: book.title,
+            icon: const Icon(Icons.book_rounded),
+            builder: (final context) => Column(
+              children: [
+                Center(
+                  child: Card(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [const Text('Title'), Text(book.title)],
+                    ),
                   ),
                 ),
-              ),
-            ...series.map(
-              (final e) => ListTile(
-                title: const Text('Series'),
-                subtitle: Text(e),
-                onTap: () => pushWidget(
-                  context: context,
-                  builder: (final context) => BooksScreen(
-                    title: 'Series: $e',
-                    where: (final book) => book.series?.contains(e) ?? false,
+                Card(
+                  semanticContainer: false,
+                  child: SingleChildScrollView(
+                    child: RichText(
+                      text: TextSpan(
+                        text: book.summary,
+                        style: DefaultTextStyle.of(context).style,
+                      ),
+                      selectionRegistrar: SelectionContainer.maybeOf(context),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: RichText(
-                  text: TextSpan(
-                    text: book.summary,
-                    style: DefaultTextStyle.of(context).style,
-                  ),
-                  selectionRegistrar: SelectionContainer.maybeOf(context),
+          ),
+          TabbedScaffoldTab(
+            title: 'Information',
+            icon: const Icon(Icons.info_rounded),
+            builder: (final context) => ListView(
+              children: [
+                CopyListTile(
+                  title: 'Title',
+                  subtitle: book.title,
+                  autofocus: true,
                 ),
-              ),
+                ...book.authors.map(
+                  (final e) {
+                    if (e.role.toLowerCase().trim().startsWith('publisher')) {
+                      needPublisher = false;
+                    }
+                    return ListTile(
+                      title: Text(e.role),
+                      subtitle: Text(e.firstLast),
+                      onTap: () => pushWidget(
+                        context: context,
+                        builder: (final context) => AuthorScreen(author: e),
+                      ),
+                    );
+                  },
+                ),
+                if (needPublisher)
+                  ListTile(
+                    title: const Text('Publisher'),
+                    subtitle: Text(book.publication),
+                    onTap: () => pushWidget(
+                      context: context,
+                      builder: (final context) => BooksScreen(
+                        title: 'Published by: $publisher',
+                        where: (final book) => book.publication == publisher,
+                      ),
+                    ),
+                  ),
+                ...series.map(
+                  (final e) => ListTile(
+                    title: const Text('Series'),
+                    subtitle: Text(e),
+                    onTap: () => pushWidget(
+                      context: context,
+                      builder: (final context) => BooksScreen(
+                        title: 'Series: $e',
+                        where: (final book) =>
+                            book.series?.contains(e) ?? false,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

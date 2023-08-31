@@ -14,9 +14,9 @@ class Book {
   /// Create an instance.
   const Book({
     required this.entryDate,
-    this.summary = 'No summary available.',
-    this.genre = const [],
-    this.source = unknown,
+    required this.summary,
+    required this.genre,
+    required this.source,
     this.format = const [],
     this.copies = unknown,
     this.publication = unknown,

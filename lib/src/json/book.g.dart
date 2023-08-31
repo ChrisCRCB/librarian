@@ -8,11 +8,9 @@ part of 'book.dart';
 
 Book _$BookFromJson(Map<String, dynamic> json) => Book(
       entryDate: DateTime.parse(json['entrydate'] as String),
-      summary: json['summary'] as String? ?? 'No summary available.',
-      genre:
-          (json['genre'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-              const [],
-      source: json['source'] as String? ?? unknown,
+      summary: json['summary'] as String,
+      genre: (json['genre'] as List<dynamic>).map((e) => e as String).toList(),
+      source: json['source'] as String,
       format: (json['format'] as List<dynamic>?)
               ?.map((e) => BookFormat.fromJson(e as Map<String, dynamic>))
               .toList() ??
