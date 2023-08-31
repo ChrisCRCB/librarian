@@ -75,7 +75,10 @@ class HomePage extends ConsumerWidget {
                     searchString: author.firstLast,
                     child: ListTile(
                       autofocus: index == 0,
-                      title: Text('${author.role}: ${author.firstLast}'),
+                      title: Text(
+                        '${author.role}: ${author.firstLast}',
+                        style: largeTextStyle,
+                      ),
                       onTap: () => pushWidget(
                         context: context,
                         builder: (final context) => AuthorScreen(
@@ -118,26 +121,21 @@ class HomePage extends ConsumerWidget {
                 items: genres,
                 builder: (final context, final index) {
                   final genre = genres[index];
-                  final booksInGenre = books
-                      .where(
-                        (final element) => element.genre
-                            .map((final e) => e.trim())
-                            .contains(genre),
-                      )
-                      .toList();
                   return SearchableListTile(
                     searchString: genre,
                     child: ListTile(
                       autofocus: index == 0,
-                      title: Text(genre),
-                      subtitle: Text(booksInGenre.length.toString()),
+                      title: Text(
+                        genre,
+                        style: largeTextStyle,
+                      ),
                       onTap: () => pushWidget(
                         context: context,
-                        builder: (final context) => Cancel(
-                          child: SimpleScaffold(
-                            title: genre,
-                            body: BooksListView(books: booksInGenre),
-                          ),
+                        builder: (final context) => BooksScreen(
+                          title: 'Genre: $genre',
+                          where: (final book) => book.genre
+                              .map((final e) => e.trim())
+                              .contains(genre),
                         ),
                       ),
                     ),
@@ -156,7 +154,10 @@ class HomePage extends ConsumerWidget {
                     searchString: format,
                     child: ListTile(
                       autofocus: index == 0,
-                      title: Text(format),
+                      title: Text(
+                        format,
+                        style: largeTextStyle,
+                      ),
                       onTap: () => pushWidget(
                         context: context,
                         builder: (final context) => BooksScreen(

@@ -25,7 +25,15 @@ class BooksListView extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     if (books.isEmpty) {
-      return CenterText(text: emptyMessage);
+      return Focus(
+        autofocus: true,
+        child: Center(
+          child: Text(
+            emptyMessage,
+            style: largeTextStyle,
+          ),
+        ),
+      );
     }
     final sortedBooks = [...books]..sort(
         (final a, final b) =>

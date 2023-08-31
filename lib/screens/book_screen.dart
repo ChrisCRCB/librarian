@@ -4,25 +4,53 @@ import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../const.dart';
 import '../src/json/book.dart';
+import '../widgets/large_text.dart';
+import '../widgets/large_text_list_tile.dart';
 import 'author_screen.dart';
 import 'books_screen.dart';
 import 'series_screen.dart';
 
 /// A screen that shows a single [book].
-class BookScreen extends ConsumerWidget {
+class BookScreen extends ConsumerStatefulWidget {
   /// Create an instance.
   const BookScreen({
     required this.book,
     super.key,
   });
 
-  /// The book to show.
+  /// The book to display.
   final Book book;
 
-  /// Build the widget.
+  /// Create state for this widget.
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
+  BookScreenState createState() => BookScreenState();
+}
+
+/// State for [BookScreen].
+class BookScreenState extends ConsumerState<BookScreen> {
+  /// The controller to use for displaying the book summary.
+  late final TextEditingController summaryController;
+
+  /// Initialise state.
+  @override
+  void initState() {
+    super.initState();
+    summaryController = TextEditingController(text: widget.book.summary);
+  }
+
+  /// Dispose of the widget.
+  @override
+  void dispose() {
+    super.dispose();
+    summaryController.dispose();
+  }
+
+  /// Build a widget.
+  @override
+  Widget build(final BuildContext context) {
+    final book = widget.book;
     final publisher = book.publication;
     var needPublisher = true;
     final series = Set.from(book.series ?? []);
@@ -32,27 +60,22 @@ class BookScreen extends ConsumerWidget {
           TabbedScaffoldTab(
             title: book.title,
             icon: const Icon(Icons.book_rounded),
-            builder: (final context) => Column(
+            builder: (final context) => ListView(
               children: [
-                Center(
-                  child: Card(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [const Text('Title'), Text(book.title)],
-                    ),
-                  ),
+                LargeTextListTile(
+                  autofocus: true,
+                  title: 'Title',
+                  subtitle: book.title,
                 ),
-                Card(
-                  semanticContainer: false,
-                  child: SingleChildScrollView(
-                    child: RichText(
-                      text: TextSpan(
-                        text: book.summary,
-                        style: DefaultTextStyle.of(context).style,
-                      ),
-                      selectionRegistrar: SelectionContainer.maybeOf(context),
-                    ),
+                TextField(
+                  controller: summaryController,
+                  decoration: const InputDecoration(
+                    labelText: 'Book Summary',
                   ),
+                  expands: true,
+                  maxLines: null,
+                  readOnly: true,
+                  style: largeTextStyle,
                 ),
               ],
             ),
@@ -62,10 +85,10 @@ class BookScreen extends ConsumerWidget {
             icon: const Icon(Icons.info_rounded),
             builder: (final context) => ListView(
               children: [
-                CopyListTile(
+                LargeTextListTile(
+                  autofocus: true,
                   title: 'Title',
                   subtitle: book.title,
-                  autofocus: true,
                 ),
                 ...book.authors.map(
                   (final e) {
@@ -73,8 +96,8 @@ class BookScreen extends ConsumerWidget {
                       needPublisher = false;
                     }
                     return ListTile(
-                      title: Text(e.role),
-                      subtitle: Text(e.firstLast),
+                      title: LargeText(text: e.role),
+                      subtitle: LargeText(text: e.firstLast),
                       onTap: () => pushWidget(
                         context: context,
                         builder: (final context) => AuthorScreen(author: e),
@@ -83,12 +106,15 @@ class BookScreen extends ConsumerWidget {
                   },
                 ),
                 ...book.callNumbers.map(
-                  (final e) => CopyListTile(title: 'Call Number', subtitle: e),
+                  (final e) => LargeTextListTile(
+                    title: 'Call Number',
+                    subtitle: e,
+                  ),
                 ),
                 if (needPublisher)
                   ListTile(
-                    title: const Text('Publisher'),
-                    subtitle: Text(book.publication),
+                    title: const LargeText(text: 'Publisher'),
+                    subtitle: LargeText(text: book.publication),
                     onTap: () => pushWidget(
                       context: context,
                       builder: (final context) => BooksScreen(
@@ -99,19 +125,17 @@ class BookScreen extends ConsumerWidget {
                   ),
                 ...series.map(
                   (final e) => ListTile(
-                    title: const Text('Series'),
-                    subtitle: Text(e),
+                    title: const LargeText(text: 'Series'),
+                    subtitle: LargeText(text: e),
                     onTap: () => pushWidget(
                       context: context,
                       builder: (final context) => SeriesScreen(series: e),
                     ),
                   ),
                 ),
-                ListTile(
-                  title: const Text('Formats'),
-                  subtitle:
-                      Text(book.format.map((final e) => e.text).join(', ')),
-                  onTap: () {},
+                LargeTextListTile(
+                  title: 'Formats',
+                  subtitle: book.format.map((final e) => e.text).join(', '),
                 ),
               ],
             ),
