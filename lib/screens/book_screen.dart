@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../src/json/book.dart';
 import 'author_screen.dart';
 import 'books_screen.dart';
+import 'series_screen.dart';
 
 /// A screen that shows a single [book].
 class BookScreen extends ConsumerWidget {
@@ -81,6 +82,9 @@ class BookScreen extends ConsumerWidget {
                     );
                   },
                 ),
+                ...book.callNumbers.map(
+                  (final e) => CopyListTile(title: 'Call Number', subtitle: e),
+                ),
                 if (needPublisher)
                   ListTile(
                     title: const Text('Publisher'),
@@ -99,13 +103,15 @@ class BookScreen extends ConsumerWidget {
                     subtitle: Text(e),
                     onTap: () => pushWidget(
                       context: context,
-                      builder: (final context) => BooksScreen(
-                        title: 'Series: $e',
-                        where: (final book) =>
-                            book.series?.contains(e) ?? false,
-                      ),
+                      builder: (final context) => SeriesScreen(series: e),
                     ),
                   ),
+                ),
+                ListTile(
+                  title: const Text('Formats'),
+                  subtitle:
+                      Text(book.format.map((final e) => e.text).join(', ')),
+                  onTap: () {},
                 ),
               ],
             ),

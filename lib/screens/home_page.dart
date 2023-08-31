@@ -4,10 +4,13 @@ import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../const.dart';
 import '../src/json/book_author.dart';
 import '../src/providers.dart';
 import '../widgets/books_list_view.dart';
 import 'author_screen.dart';
+import 'books_screen.dart';
+import 'series_screen.dart';
 
 /// The main page of the application.
 class HomePage extends ConsumerWidget {
@@ -23,7 +26,9 @@ class HomePage extends ConsumerWidget {
     return value.when(
       data: (final books) {
         final authorList = <BookAuthor>[];
+        final seriesList = <String>[];
         final genreList = <String>[];
+        final formatsList = <String>[];
         for (final book in books) {
           for (final author in book.authors) {
             if (authorList
@@ -37,14 +42,21 @@ class HomePage extends ConsumerWidget {
             }
           }
           genreList.addAll(book.genre.map((final e) => e.trim()));
+          final bookSeries = book.series ?? [];
+          seriesList.addAll(bookSeries.map((final e) => e.trim()));
+          formatsList.addAll(book.format.map((final e) => e.text));
         }
         authorList.sort(
           (final a, final b) =>
               a.firstLast.toLowerCase().compareTo(b.firstLast.toLowerCase()),
         );
+        seriesList.sort();
         genreList.sort();
+        formatsList.sort();
         final authors = Set<BookAuthor>.from(authorList).toList();
+        final series = Set<String>.from(seriesList).toList();
         final genres = Set<String>.from(genreList).toList();
+        final formats = Set<String>.from(formatsList).toList();
         return TabbedScaffold(
           tabs: [
             TabbedScaffoldTab(
@@ -69,6 +81,30 @@ class HomePage extends ConsumerWidget {
                         builder: (final context) => AuthorScreen(
                           author: author,
                         ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            TabbedScaffoldTab(
+              title: 'Series',
+              icon: Text('${series.length}'),
+              builder: (final context) => BuiltSearchableListView(
+                items: series,
+                builder: (final context, final index) {
+                  final s = series[index];
+                  return SearchableListTile(
+                    searchString: s,
+                    child: ListTile(
+                      autofocus: index == 0,
+                      title: Text(
+                        s,
+                        style: largeTextStyle,
+                      ),
+                      onTap: () => pushWidget(
+                        context: context,
+                        builder: (final context) => SeriesScreen(series: s),
                       ),
                     ),
                   );
@@ -102,6 +138,32 @@ class HomePage extends ConsumerWidget {
                             title: genre,
                             body: BooksListView(books: booksInGenre),
                           ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            TabbedScaffoldTab(
+              title: 'Formats',
+              icon: Text('${formats.length}'),
+              builder: (final context) => BuiltSearchableListView(
+                items: formats,
+                builder: (final context, final index) {
+                  final format = formats[index];
+                  return SearchableListTile(
+                    searchString: format,
+                    child: ListTile(
+                      autofocus: index == 0,
+                      title: Text(format),
+                      onTap: () => pushWidget(
+                        context: context,
+                        builder: (final context) => BooksScreen(
+                          title: 'Format: $format',
+                          where: (final book) => book.format
+                              .where((final element) => element.text == format)
+                              .isNotEmpty,
                         ),
                       ),
                     ),

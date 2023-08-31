@@ -22,6 +22,10 @@ Book _$BookFromJson(Map<String, dynamic> json) => Book(
               ?.map((e) => BookAuthor.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [BookAuthor(lastFirst: unknown, firstLast: unknown)],
+      callNumbers: (json['callnumber'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       language: (json['language'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -46,4 +50,5 @@ Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
       'entrydate': instance.entryDate.toIso8601String(),
       'format': instance.format,
       'copies': instance.copies,
+      'callnumber': instance.callNumbers,
     };

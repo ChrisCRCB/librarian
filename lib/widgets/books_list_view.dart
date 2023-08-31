@@ -2,6 +2,7 @@ import 'package:backstreets_widgets/util.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
+import '../const.dart';
 import '../screens/book_screen.dart';
 import '../src/json/book.dart';
 
@@ -48,11 +49,7 @@ class BooksListView extends StatelessWidget {
             autofocus: index == 0,
             title: Text(
               '$bookTitle by $bookAuthor',
-              style: const TextStyle(
-                fontSize: 28,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+              style: largeTextStyle,
             ),
             onTap: () => pushWidget(
               context: context,

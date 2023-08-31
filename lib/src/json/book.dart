@@ -27,6 +27,7 @@ class Book {
         firstLast: unknown,
       ),
     ],
+    this.callNumbers = const [],
     this.language,
     this.series,
     this.awards = const [],
@@ -72,6 +73,10 @@ class Book {
 
   /// The number of copies we have.
   final String copies;
+
+  /// The call number.
+  @JsonKey(name: 'callnumber')
+  final List<String> callNumbers;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BookToJson(this);
