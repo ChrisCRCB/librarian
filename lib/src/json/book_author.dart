@@ -9,7 +9,7 @@ class BookAuthor {
   const BookAuthor({
     required this.lastFirst,
     required this.firstLast,
-    required this.role,
+    this.role = 'Author',
   });
 
   /// Create an instance from a JSON object.

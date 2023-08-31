@@ -9,7 +9,7 @@ part of 'book_author.dart';
 BookAuthor _$BookAuthorFromJson(Map<String, dynamic> json) => BookAuthor(
       lastFirst: json['lf'] as String,
       firstLast: json['fl'] as String,
-      role: json['role'] as String,
+      role: json['role'] as String? ?? 'Author',
     );
 
 Map<String, dynamic> _$BookAuthorToJson(BookAuthor instance) =>

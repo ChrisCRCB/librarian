@@ -14,28 +14,19 @@ class Book {
   /// Create an instance.
   const Book({
     required this.entryDate,
-    this.date = unknown,
     this.summary = 'No summary available.',
     this.genre = const [],
     this.source = unknown,
     this.format = const [],
     this.copies = unknown,
-    this.volumes = '1',
-    this.dimensions,
-    this.weight,
-    this.pages,
     this.publication = unknown,
-    this.asin = unknown,
     this.title = 'Untitled Book',
-    this.originalIsbn = unknown,
     this.authors = const [
       BookAuthor(
         lastFirst: unknown,
         firstLast: unknown,
-        role: 'Author',
       ),
     ],
-    this.tags = const [],
     this.language,
     this.series,
     this.awards = const [],
@@ -51,21 +42,8 @@ class Book {
   /// The authors of this book.
   final List<BookAuthor> authors;
 
-  /// The tags of this book.
-  final List<String> tags;
-
-  /// The original ISBN of this book.
-  @JsonKey(name: 'originalisbn')
-  final String? originalIsbn;
-
-  /// The ASIN of this book.
-  final String? asin;
-
   /// The publisher of this book.
-  final String? publication;
-
-  /// The date string.
-  final String? date;
+  final String publication;
 
   /// The summary of this book.
   final String summary;
@@ -94,18 +72,6 @@ class Book {
 
   /// The number of copies we have.
   final String copies;
-
-  /// The number of volumes.
-  final String volumes;
-
-  /// The dimensions of this book.
-  final String? dimensions;
-
-  /// The weight of this book.
-  final String? weight;
-
-  /// The number of pages.
-  final String? pages;
 
   /// Convert an instance to JSON.
   Map<String, dynamic> toJson() => _$BookToJson(this);
