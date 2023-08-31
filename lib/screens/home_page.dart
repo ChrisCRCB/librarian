@@ -4,8 +4,10 @@ import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../src/json/book_author.dart';
 import '../src/providers.dart';
 import '../widgets/books_list_view.dart';
+import 'author_screen.dart';
 
 /// The main page of the application.
 class HomePage extends ConsumerWidget {
@@ -20,16 +22,58 @@ class HomePage extends ConsumerWidget {
     final value = ref.watch(booksProvider.call(context));
     return value.when(
       data: (final books) {
-        final genreList = [
-          for (final book in books) ...book.genre.map((final e) => e.trim()),
-        ]..sort();
-        final genres = {...genreList}.toList();
+        final authorList = <BookAuthor>[];
+        final genreList = <String>[];
+        for (final book in books) {
+          for (final author in book.authors) {
+            if (authorList
+                .where(
+                  (final element) =>
+                      element.firstLast == author.firstLast &&
+                      element.role == author.role,
+                )
+                .isEmpty) {
+              authorList.add(author);
+            }
+          }
+          genreList.addAll(book.genre.map((final e) => e.trim()));
+        }
+        authorList.sort(
+          (final a, final b) =>
+              a.firstLast.toLowerCase().compareTo(b.firstLast.toLowerCase()),
+        );
+        genreList.sort();
+        final authors = Set<BookAuthor>.from(authorList).toList();
+        final genres = Set<String>.from(genreList).toList();
         return TabbedScaffold(
           tabs: [
             TabbedScaffoldTab(
-              title: 'All Books',
+              title: 'Books',
               icon: Text('${books.length}'),
               builder: (final context) => BooksListView(books: books),
+            ),
+            TabbedScaffoldTab(
+              title: 'Authors',
+              icon: Text('${authors.length}'),
+              builder: (final context) => BuiltSearchableListView(
+                items: authors,
+                builder: (final context, final index) {
+                  final author = authors[index];
+                  return SearchableListTile(
+                    searchString: author.firstLast,
+                    child: ListTile(
+                      autofocus: index == 0,
+                      title: Text('${author.role}: ${author.firstLast}'),
+                      onTap: () => pushWidget(
+                        context: context,
+                        builder: (final context) => AuthorScreen(
+                          author: author,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
             TabbedScaffoldTab(
               title: 'Genres',

@@ -36,14 +36,14 @@ class BooksListView extends StatelessWidget {
         final book = sortedBooks[index];
         final bookTitle = book.title.trim();
         final bookAuthor = book.authors
-            .firstWhere(
+            .where(
               (final element) =>
                   element.role.toLowerCase().startsWith('author'),
-              orElse: () => book.authors.first,
             )
-            .firstLast;
+            .map((final e) => e.firstLast)
+            .join(', ');
         return SearchableListTile(
-          searchString: bookTitle,
+          searchString: bookTitle + bookAuthor,
           child: ListTile(
             autofocus: index == 0,
             title: Text('$bookTitle by $bookAuthor'),
