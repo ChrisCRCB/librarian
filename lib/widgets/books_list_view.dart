@@ -2,9 +2,9 @@ import 'package:backstreets_widgets/util.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
-import '../const.dart';
 import '../screens/book_screen.dart';
 import '../src/json/book.dart';
+import 'large_text.dart';
 
 /// A [ListView] which will show [books].
 class BooksListView extends StatelessWidget {
@@ -28,10 +28,7 @@ class BooksListView extends StatelessWidget {
       return Focus(
         autofocus: true,
         child: Center(
-          child: Text(
-            emptyMessage,
-            style: largeTextStyle,
-          ),
+          child: LargeText(text: emptyMessage),
         ),
       );
     }
@@ -55,9 +52,8 @@ class BooksListView extends StatelessWidget {
           searchString: bookTitle + bookAuthor,
           child: ListTile(
             autofocus: index == 0,
-            title: Text(
-              '$bookTitle by $bookAuthor',
-              style: largeTextStyle,
+            title: LargeText(
+              text: '$bookTitle by $bookAuthor',
             ),
             onTap: () => pushWidget(
               context: context,

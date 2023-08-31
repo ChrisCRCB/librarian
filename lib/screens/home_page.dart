@@ -4,10 +4,10 @@ import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../const.dart';
 import '../src/json/book_author.dart';
 import '../src/providers.dart';
 import '../widgets/books_list_view.dart';
+import '../widgets/large_text.dart';
 import 'author_screen.dart';
 import 'books_screen.dart';
 import 'series_screen.dart';
@@ -75,9 +75,8 @@ class HomePage extends ConsumerWidget {
                     searchString: author.firstLast,
                     child: ListTile(
                       autofocus: index == 0,
-                      title: Text(
-                        '${author.role}: ${author.firstLast}',
-                        style: largeTextStyle,
+                      title: LargeText(
+                        text: '${author.role}: ${author.firstLast}',
                       ),
                       onTap: () => pushWidget(
                         context: context,
@@ -101,9 +100,8 @@ class HomePage extends ConsumerWidget {
                     searchString: s,
                     child: ListTile(
                       autofocus: index == 0,
-                      title: Text(
-                        s,
-                        style: largeTextStyle,
+                      title: LargeText(
+                        text: s,
                       ),
                       onTap: () => pushWidget(
                         context: context,
@@ -125,9 +123,8 @@ class HomePage extends ConsumerWidget {
                     searchString: genre,
                     child: ListTile(
                       autofocus: index == 0,
-                      title: Text(
-                        genre,
-                        style: largeTextStyle,
+                      title: LargeText(
+                        text: genre,
                       ),
                       onTap: () => pushWidget(
                         context: context,
@@ -154,9 +151,8 @@ class HomePage extends ConsumerWidget {
                     searchString: format,
                     child: ListTile(
                       autofocus: index == 0,
-                      title: Text(
-                        format,
-                        style: largeTextStyle,
+                      title: LargeText(
+                        text: format,
                       ),
                       onTap: () => pushWidget(
                         context: context,
