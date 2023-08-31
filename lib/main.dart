@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'gen/assets.gen.dart';
 import 'screens/home_page.dart';
 
 void main() {
@@ -21,7 +22,16 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const HomePage(),
+          home: Stack(
+            children: [
+              Positioned(
+                left: 10,
+                top: 10,
+                child: Image.asset(Assets.logo.keyName),
+              ),
+              const HomePage(),
+            ],
+          ),
         ),
       );
 }
