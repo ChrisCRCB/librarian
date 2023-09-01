@@ -45,4 +45,23 @@ class ShoppingCart {
   /// Returns `true` of [id] is found in [items].
   bool contains(final String id) =>
       items.where((final element) => element.id == id).isNotEmpty;
+
+  /// Convert [items] to text.
+  String itemsToText() {
+    final buffer = StringBuffer();
+    for (var i = 0; i < items.length; i++) {
+      final item = items[i];
+      buffer.writeln('${i + 1}. ${item.name} (${item.id})');
+    }
+    return buffer.toString();
+  }
+
+  /// Return an email requesting [items].
+  String getEmail() {
+    final buffer = StringBuffer()
+      ..writeln('Hi,')
+      ..writeln('I would like to reserve the following books:')
+      ..writeln(itemsToText());
+    return buffer.toString();
+  }
 }

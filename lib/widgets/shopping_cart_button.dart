@@ -1,10 +1,11 @@
-import 'package:backstreets_widgets/util.dart';
+import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../src/json/book.dart';
 import '../src/json/shopping_cart/shopping_cart_item.dart';
 import '../src/providers.dart';
+import 'error_button.dart';
 import 'large_text.dart';
 
 /// An [ElevatedButton] to add or remove [book] from the shopping cart.
@@ -23,7 +24,7 @@ class ShoppingCartButton extends ConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final id = book.callNumbers.first;
     final bookTitle = book.title;
-    final author = book.authors.join(', ');
+    final author = book.authors.map((final e) => e.firstLast).join(', ');
     final value = ref.watch(shoppingCartProvider);
     return value.when(
       data: (final shoppingCart) {
@@ -50,24 +51,8 @@ class ShoppingCartButton extends ConsumerWidget {
           ),
         );
       },
-      error: (final error, final stackTrace) => ElevatedButton(
-        onPressed: () {
-          final buffer = StringBuffer()
-            ..writeln(error)
-            ..writeln(stackTrace.toString());
-          setClipboardText(buffer.toString());
-        },
-        child: const Icon(
-          Icons.error_outline,
-          semanticLabel: 'Error',
-        ),
-      ),
-      loading: () => const ElevatedButton(
-        onPressed: null,
-        child: CircularProgressIndicator(
-          semanticsLabel: 'Loading shopping cart...',
-        ),
-      ),
+      error: ErrorButton.withPositional,
+      loading: LoadingWidget.new,
     );
   }
 }

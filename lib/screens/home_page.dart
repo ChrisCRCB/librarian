@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../src/json/book_author.dart';
 import '../src/providers.dart';
 import '../widgets/books_list_view.dart';
+import '../widgets/error_button.dart';
 import '../widgets/large_text.dart';
 import '../widgets/shopping_cart_list_view.dart';
 import 'author_screen.dart';
@@ -58,6 +59,7 @@ class HomePage extends ConsumerWidget {
         final series = Set<String>.from(seriesList).toList();
         final genres = Set<String>.from(genreList).toList();
         final formats = Set<String>.from(formatsList).toList();
+        final shoppingCartValue = ref.watch(shoppingCartProvider);
         return TabbedScaffold(
           tabs: [
             TabbedScaffoldTab(
@@ -66,6 +68,36 @@ class HomePage extends ConsumerWidget {
               builder: (final context) => BooksListView(books: books),
             ),
             TabbedScaffoldTab(
+              actions: [
+                shoppingCartValue.when(
+                  data: (final shoppingCart) {
+                    if (shoppingCart.items.isEmpty) {
+                      return const ElevatedButton(
+                        onPressed: null,
+                        child: LargeText(
+                          text: 'The cart is empty',
+                        ),
+                      );
+                    }
+                    return ElevatedButton(
+                      onPressed: () {
+                        setClipboardText(shoppingCart.getEmail());
+                        showMessage(
+                          context: context,
+                          message:
+                              'Email the contents of your clipboard to the '
+                              'library.',
+                        );
+                      },
+                      child: const LargeText(
+                        text: 'Copy Cart',
+                      ),
+                    );
+                  },
+                  error: ErrorButton.withPositional,
+                  loading: LoadingWidget.new,
+                ),
+              ],
               title: 'Shopping Cart',
               icon: const LargeText(
                 text: 'The books you have added to your cart',
