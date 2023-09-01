@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../src/json/book.dart';
 import '../widgets/large_text.dart';
 import '../widgets/large_text_list_tile.dart';
+import '../widgets/shopping_cart_button.dart';
 import 'author_screen.dart';
 import 'books_screen.dart';
 import 'series_screen.dart';
@@ -32,6 +33,7 @@ class BookScreen extends ConsumerWidget {
       child: TabbedScaffold(
         tabs: [
           TabbedScaffoldTab(
+            actions: [ShoppingCartButton(book: book)],
             title: book.title,
             icon: const Icon(Icons.book_rounded),
             builder: (final context) => ListView(
@@ -52,6 +54,7 @@ class BookScreen extends ConsumerWidget {
             ),
           ),
           TabbedScaffoldTab(
+            actions: [ShoppingCartButton(book: book)],
             title: 'Information',
             icon: const Icon(Icons.info_rounded),
             builder: (final context) => ListView(

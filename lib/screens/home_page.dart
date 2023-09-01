@@ -8,6 +8,7 @@ import '../src/json/book_author.dart';
 import '../src/providers.dart';
 import '../widgets/books_list_view.dart';
 import '../widgets/large_text.dart';
+import '../widgets/shopping_cart_list_view.dart';
 import 'author_screen.dart';
 import 'books_screen.dart';
 import 'series_screen.dart';
@@ -63,6 +64,13 @@ class HomePage extends ConsumerWidget {
               title: 'Books',
               icon: Text('${books.length}'),
               builder: (final context) => BooksListView(books: books),
+            ),
+            TabbedScaffoldTab(
+              title: 'Shopping Cart',
+              icon: const LargeText(
+                text: 'The books you have added to your cart',
+              ),
+              builder: (final context) => const ShoppingCartListView(),
             ),
             TabbedScaffoldTab(
               title: 'Authors',

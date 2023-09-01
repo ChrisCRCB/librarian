@@ -43,7 +43,7 @@ final shoppingCartProvider = FutureProvider<ShoppingCart>(
     if (string == null) {
       // ignore: prefer_const_constructors
       final cart = ShoppingCart(name: 'Shopping Cart', items: []);
-      await sharedPreferences.setString(shoppingCartKey, jsonEncode(cart));
+      await cart.save(sharedPreferences);
       return cart;
     }
     return ShoppingCart.fromJson(jsonDecode(string));
