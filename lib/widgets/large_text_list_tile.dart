@@ -27,7 +27,7 @@ class LargeTextListTile extends StatelessWidget {
   Widget build(final BuildContext context) => ListTile(
         autofocus: autofocus,
         title: LargeText(text: title),
-        subtitle: LargeText(text: title),
+        subtitle: LargeText(text: subtitle),
         onTap: () => setClipboardText('$title: $subtitle'),
       );
 }
