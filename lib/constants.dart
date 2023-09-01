@@ -6,3 +6,6 @@ const largeTextStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,
 );
+
+/// The key which references the shopping cart.
+const shoppingCartKey = 'librarian_shopping_cart_key';

@@ -4,7 +4,7 @@ import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../const.dart';
+import '../constants.dart';
 import '../src/json/book.dart';
 import '../widgets/large_text.dart';
 import '../widgets/large_text_list_tile.dart';

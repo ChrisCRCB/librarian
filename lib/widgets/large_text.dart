@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../const.dart';
+import '../constants.dart';
 
 /// A large [Text] widget.
 class LargeText extends StatelessWidget {
