@@ -13,10 +13,11 @@ class Assets {
   Assets._();
 
   static const String books = 'assets/books.json';
+  static const String email = 'assets/email.txt';
   static const AssetGenImage logo = AssetGenImage('assets/logo.png');
 
   /// List of all assets
-  List<dynamic> get values => [books, logo];
+  List<dynamic> get values => [books, email, logo];
 }
 
 class AssetGenImage {
