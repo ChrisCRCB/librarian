@@ -4,7 +4,6 @@ import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../constants.dart';
 import '../src/json/book.dart';
 import '../widgets/large_text.dart';
 import '../widgets/large_text_list_tile.dart';
@@ -13,7 +12,7 @@ import 'books_screen.dart';
 import 'series_screen.dart';
 
 /// A screen that shows a single [book].
-class BookScreen extends ConsumerStatefulWidget {
+class BookScreen extends ConsumerWidget {
   /// Create an instance.
   const BookScreen({
     required this.book,
@@ -23,34 +22,9 @@ class BookScreen extends ConsumerStatefulWidget {
   /// The book to display.
   final Book book;
 
-  /// Create state for this widget.
+  /// Build the widget.
   @override
-  BookScreenState createState() => BookScreenState();
-}
-
-/// State for [BookScreen].
-class BookScreenState extends ConsumerState<BookScreen> {
-  /// The controller to use for displaying the book summary.
-  late final TextEditingController summaryController;
-
-  /// Initialise state.
-  @override
-  void initState() {
-    super.initState();
-    summaryController = TextEditingController(text: widget.book.summary);
-  }
-
-  /// Dispose of the widget.
-  @override
-  void dispose() {
-    super.dispose();
-    summaryController.dispose();
-  }
-
-  /// Build a widget.
-  @override
-  Widget build(final BuildContext context) {
-    final book = widget.book;
+  Widget build(final BuildContext context, final WidgetRef ref) {
     final publisher = book.publication;
     var needPublisher = true;
     final series = Set.from(book.series ?? []);
@@ -67,15 +41,12 @@ class BookScreenState extends ConsumerState<BookScreen> {
                   title: 'Title',
                   subtitle: book.title,
                 ),
-                TextField(
-                  controller: summaryController,
-                  decoration: const InputDecoration(
-                    labelText: 'Book Summary',
+                ListTile(
+                  title: const LargeText(text: 'Book Summary'),
+                  subtitle: LargeText(
+                    text: book.summary,
                   ),
-                  expands: true,
-                  maxLines: null,
-                  readOnly: true,
-                  style: largeTextStyle,
+                  onTap: () => setClipboardText(book.summary),
                 ),
               ],
             ),
