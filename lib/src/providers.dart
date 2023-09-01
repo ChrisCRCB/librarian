@@ -49,3 +49,8 @@ final shoppingCartProvider = FutureProvider<ShoppingCart>(
     return ShoppingCart.fromJson(jsonDecode(string));
   },
 );
+
+/// Provide the email address to send book reservations to.
+final emailAddressProvider = FutureProvider.family<String, BuildContext>(
+  (final ref, final arg) => DefaultAssetBundle.of(arg).loadString(Assets.email),
+);
