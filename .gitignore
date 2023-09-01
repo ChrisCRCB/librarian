@@ -45,3 +45,4 @@ app.*.map.json
 pubspec.lock
 *.json
 assets/logo.png
+email.txt
