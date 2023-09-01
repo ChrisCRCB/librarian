@@ -79,19 +79,36 @@ class HomePage extends ConsumerWidget {
                         ),
                       );
                     }
-                    return ElevatedButton(
-                      onPressed: () {
-                        setClipboardText(shoppingCart.getEmail());
-                        showMessage(
-                          context: context,
-                          message:
-                              'Email the contents of your clipboard to the '
-                              'library.',
-                        );
-                      },
-                      child: const LargeText(
-                        text: 'Copy Cart',
+                    final emailValue =
+                        ref.watch(emailAddressProvider.call(context));
+                    return emailValue.when(
+                      data: (final emailAddress) => ElevatedButton(
+                        onPressed: () {
+                          final emailText = shoppingCart.getEmail();
+                          final partialUri = Uri.parse(
+                            Uri.encodeFull(emailAddress),
+                          );
+                          final body = Uri.encodeComponent(emailText);
+                          final buffer = StringBuffer('mailto:')
+                            ..write(emailAddress);
+                          if (!partialUri.hasQuery) {
+                            final subject = Uri.encodeComponent(
+                              'Reserve Books',
+                            );
+                            buffer.write('?subject=$subject');
+                          }
+                          buffer
+                            ..write('&')
+                            ..write('body=$body');
+                          final uri = Uri.parse(buffer.toString());
+                          setClipboardText(uri.toString());
+                        },
+                        child: const LargeText(
+                          text: 'Copy Cart',
+                        ),
                       ),
+                      error: ErrorButton.withPositional,
+                      loading: LoadingWidget.new,
                     );
                   },
                   error: ErrorButton.withPositional,
