@@ -3,6 +3,7 @@ import 'package:backstreets_widgets/util.dart';
 import 'package:backstreets_widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../src/json/book_author.dart';
 import '../src/providers.dart';
@@ -79,8 +80,9 @@ class HomePage extends ConsumerWidget {
                         ),
                       );
                     }
-                    final emailValue =
-                        ref.watch(emailAddressProvider.call(context));
+                    final emailValue = ref.watch(
+                      emailAddressProvider.call(context),
+                    );
                     return emailValue.when(
                       data: (final emailAddress) => ElevatedButton(
                         onPressed: () {
@@ -97,14 +99,12 @@ class HomePage extends ConsumerWidget {
                             );
                             buffer.write('?subject=$subject');
                           }
-                          buffer
-                            ..write('&')
-                            ..write('body=$body');
+                          buffer.write('&body=$body');
                           final uri = Uri.parse(buffer.toString());
-                          setClipboardText(uri.toString());
+                          launchUrl(uri);
                         },
                         child: const LargeText(
-                          text: 'Copy Cart',
+                          text: 'Email Cart',
                         ),
                       ),
                       error: ErrorButton.withPositional,
