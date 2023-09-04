@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => ProviderScope(
         child: MaterialApp(
-          title: 'Librarian',
+          title: 'CRCB Library',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
