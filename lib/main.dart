@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
               Positioned(
                 left: 10,
                 top: 10,
-                child: Image.asset(Assets.logo.keyName),
+                child: Assets.logo.image(semanticLabel: 'Logo'),
               ),
               const HomePage(),
             ],
