@@ -116,8 +116,8 @@ class HomePage extends ConsumerWidget {
                 ),
               ],
               title: 'Shopping Cart',
-              icon: const LargeText(
-                text: 'The books you have added to your cart',
+              icon: const Text(
+                'The books you have added to your cart',
               ),
               builder: (final context) => const ShoppingCartListView(),
             ),
